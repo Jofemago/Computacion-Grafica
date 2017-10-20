@@ -11,19 +11,23 @@ if __name__ =='__main__':
 
     jugadores = pygame.sprite.Group()
     general = pygame.sprite.Group()
+    plataformas = pygame.sprite.Group()
 
-    #pl = plataforma()
-    #pl.rect.x = 300
-    #pl.rect.y= 450
-    fondo = pygame.image.load('fondo.jpg')
+    pl = plataforma()
+    pl.rect.x = 300
+    pl.rect.y= 450
+    #fondo = pygame.image.load('fondo.jpg')
     f_x = 0
     jg = Player(50,50)
     #jg.rect.x = 0
     #jg.rect.y = 0
 
     jugadores.add(jg)
+
+    general.add(pl)
+    plataformas.add(pl)
     general.add(jg)
-    #general.add(pl)
+    jg.plataformas = plataformas
 
     reloj = pygame.time.Clock()
     fin  = False
@@ -50,18 +54,18 @@ if __name__ =='__main__':
             if event.type == pygame.KEYUP:
 
                 #jg.var_y = 0
-                if event.key == pygame.K_RIGHT and not event.key == pygame.K_LEFT:
+                if event.key == pygame.K_RIGHT  :
                     jg.var_x = 0
-                if event.key == pygame.K_LEFT and not event.key == pygame.K_RIGHT  :
+                if event.key == pygame.K_LEFT   :
 
                     jg.var_x = 0
 
 
 
         pantalla.fill(NEGRO)
-        pantalla.blit(fondo,[f_x,0])
+        #pantalla.blit(fondo,[f_x,0])
         general.update()
         general.draw(pantalla)
         pygame.display.flip()
         reloj.tick(60)
-        f_x -= 3
+        #f_x -= 3

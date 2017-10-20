@@ -47,7 +47,7 @@ class Jugador(pygame.sprite.Sprite):
         self.muros = None
 
     def update(self):
-
+        #Actualizacion de sprite genera movimiento
         if self.var_y != 0 or self.var_x != 0:
             if self.i < 2 :
 
@@ -58,6 +58,8 @@ class Jugador(pygame.sprite.Sprite):
         #self.rect = self.image.get_rect()
         self.rect.x += self.var_x
 
+
+        #colisiones
         ls_bl = pygame.sprite.spritecollide(self,self.muros, False)
         for m in ls_bl:
             if self.var_x > 0:
