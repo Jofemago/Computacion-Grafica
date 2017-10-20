@@ -16,12 +16,49 @@ class Vida(pygame.sprite.Sprite):
 class plataforma(pygame.sprite.Sprite):
     cl = ROJO
     al = 200
-    an = 50
+    an = 10
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.Surface([self.al,self.an])
         self.image.fill(self.cl)
         self.rect= self.image.get_rect()
+
+
+class plataforma2(pygame.sprite.Sprite):
+    cl = ROJO
+    al = 200
+    an = 10
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface([self.al,self.an])
+        self.image.fill(self.cl)
+        self.lim_inf = 450
+        self.lim_sup = 250
+        self.var_y = 5
+        self.dir = 0
+        self.con = 0
+        self.lim = 50
+        self.rect= self.image.get_rect()
+        self.ini = self.rect.y
+
+    def update(self):
+        self.rect.y += self.var_y
+        """if self.rect.y  > self.lim_y:
+            self.var_y = -5
+        else:
+            self.var_y = 5
+
+        self.rect.y += self.var_y"""
+        self.rect.y += self.var_y
+        if self.rect.y >= self.lim_sup :
+            self.var_y =0
+            self.var_y =-5
+
+        if self.rect.y < self.lim_sup:
+            self.var_y = 5
+
+
+
 
 class Player(pygame.sprite.Sprite):
 
@@ -31,11 +68,11 @@ class Player(pygame.sprite.Sprite):
         self.image = pygame.Surface([ancho, alto])
         self.image.fill(col)
         self.rect = self.image.get_rect()
-        self.setPos(0,0)
+        self.setPos(100,0)
 
         self.sonido = pygame.mixer.Sound('grito.ogg')
         #variables de movimiento
-        self.var_x = 0
+        self.var_x =  0
         self.var_y = 0
         #self.vidas = vidas
         self.plataformas = None
@@ -110,7 +147,7 @@ class Player(pygame.sprite.Sprite):
         #colisiones
         ls_bl = pygame.sprite.spritecollide(self,self.plataformas, False)
         if len(ls_bl) > 0:# si de verdad hay colision
-            for m in ls_bl:
+            for m in ls_bl:#otra solucion es que cuando toque por la parte de ariba del objeto la variacion en y sea 0
 
                 if self.var_x > 0:
                     self.rect.right = m.rect.left
