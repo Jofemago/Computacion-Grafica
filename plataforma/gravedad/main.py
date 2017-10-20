@@ -29,9 +29,7 @@ if __name__ =='__main__':
     fondo = pygame.image.load('fondo.jpg')
 
     jg = Player(50,50)
-    lim_der = 700
-    f_x = 0
-    f_varx = 0
+
     print fondo.get_rect()
     #lim_img =
     #jg.rect.x = 0
@@ -49,6 +47,11 @@ if __name__ =='__main__':
 
     reloj = pygame.time.Clock()
     fin  = False
+
+    lim_der = 700
+    f_x = 0
+    f_varx = 0
+    #para definir el liite que va el fondo, 0 es por un lado y -(ANCHOFONDO- ANCHOPANTALLA) es el limite de la derecha
 
     while not fin:
         for event in pygame.event.get():
