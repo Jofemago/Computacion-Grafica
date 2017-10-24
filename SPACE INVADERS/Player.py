@@ -18,7 +18,7 @@ class Player(pygame.sprite.Sprite):
 
     def __init__(self,img, vidas = 3,  col = AZUL):
 
-        
+
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load(img).convert()
         self.rect = self.image.get_rect()
@@ -43,7 +43,7 @@ class Player(pygame.sprite.Sprite):
         self.rect.x = y
 
     def movX(self):
-
+        
         if self.rect.x >= ANCHO -50 and self.var_x >= 0:
             self.var_x = 0
 

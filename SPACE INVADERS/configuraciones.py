@@ -4,7 +4,7 @@ en este archivo se almacenaran todas las caracteristicas de la pantalla, como lo
 
 '''
 ANCHO=800
-ALTO=800
+ALTO=700
 BLANCO=(255,255,255)
 NEGRO=(0,0,0)
 ROJO=(255,0,0)

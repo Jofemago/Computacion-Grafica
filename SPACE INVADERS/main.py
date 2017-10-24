@@ -13,13 +13,13 @@ if __name__ =='__main__':
     pygame.display.flip()
 
     #fondo = pygame.image.load('imagenes/fondo.jpg')
-    #creamos  grupos 
+    #creamos  grupos
     jugadores = pygame.sprite.Group()
     general = pygame.sprite.Group()
 
 
     #creamos jugador
-    jg = Player('imagenes/nave1.png',10)
+    jg = Player('imagenes/nave2.png',10)
     jugadores.add(jg)
     general.add(jg)
 
@@ -33,18 +33,12 @@ if __name__ =='__main__':
             if event.type == pygame.QUIT:
                 fin=True
 
-            if event.type == pygame.KEYUP:
-            	if event.key == pygame.K_RIGHT:
-            		jg.var_x = 0
-            	if event.key == pygame.K_LEFT:
-
-                    jg.var_x = 0
-                
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RIGHT:
 
                     jg.var_x = 5
+
 
                 if event.key == pygame.K_LEFT:
 
@@ -54,7 +48,7 @@ if __name__ =='__main__':
 		pantalla.fill(NEGRO)
 		general.update()
 		general.draw(pantalla)
-       
+
        # pantalla.blit(fondo,[0,0])
         pygame.display.flip()
         reloj.tick(60)
