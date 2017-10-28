@@ -1,6 +1,7 @@
+
+
 import pygame
 from configuraciones import *
-
 
 class Proyectil(pygame.sprite.Sprite):
 

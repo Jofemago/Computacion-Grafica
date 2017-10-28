@@ -10,9 +10,15 @@ from configuraciones import *
 class Vida(pygame.sprite.Sprite):
     def __init__(self, img):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.Surface([30,30])
-        self.image.fill(VERDE)
-        self.rect= self.image.get_rect()
+        self.image = pygame.image.load(img).convert()
+        self.rect = self.image.get_rect()
+
+
+    def setPos(self, x,  y):
+
+        self.rect.x = x
+        self.rect.y = y
+
 
 class Player(pygame.sprite.Sprite):
 
@@ -22,7 +28,7 @@ class Player(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load(img).convert()
         self.rect = self.image.get_rect()
-        self.setPos(400,ALTO - self.rect.height*2)
+        self.setPos(400,ALTO - 100)
 
         #variables de movimiento
         self.var_x = 0
@@ -43,7 +49,7 @@ class Player(pygame.sprite.Sprite):
         self.rect.x = y
 
     def movX(self):
-        
+
         if self.rect.x >= ANCHO -50 and self.var_x >= 0:
             self.var_x = 0
 
