@@ -36,7 +36,7 @@ if __name__ =='__main__':
     superior =limite()
     inferior = limite()
     superior.setPos(0,68)
-    inferior.setPos(0,598)
+    inferior.setPos(0,610)
     limites.add(superior)
     limites.add(inferior)
     general.add(superior)
@@ -48,22 +48,22 @@ if __name__ =='__main__':
         for j in range(0,15):
 
             es = Escudo()
-            es.setPos(75 + i*5,450 + j* 5)
+            es.setPos(75 + i*5,475 + j* 5)
             general.add(es)
             Escudos.add(es)
 
             es = Escudo()
-            es.setPos(250 + i*5,450 + j* 5)
+            es.setPos(250 + i*5,475 + j* 5)
             general.add(es)
             Escudos.add(es)
 
             es = Escudo()
-            es.setPos(425 + i*5,450 + j* 5)
+            es.setPos(425 + i*5,475 + j* 5)
             general.add(es)
             Escudos.add(es)
 
             es = Escudo()
-            es.setPos(600 + i*5,450 + j* 5)
+            es.setPos(600 + i*5,475 + j* 5)
             general.add(es)
             Escudos.add(es)
 
@@ -91,11 +91,11 @@ if __name__ =='__main__':
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RIGHT:
 
-                    jg.var_x = 5
+                    jg.var_x = 4
 
                 if event.key == pygame.K_LEFT:
 
-                    jg.var_x = -5
+                    jg.var_x = -4
 
                 if event.key == pygame.K_SPACE:
 
@@ -104,7 +104,9 @@ if __name__ =='__main__':
                         bala.rect.x = jg.rect.x + 22
                         bala.rect.y = jg.rect.y +5
                         disparosJugador.add(bala)
+                        disparos.add(bala)
                         general.add(bala)
+                        jg.disparar()
 
 
             if event.type == pygame.KEYUP:
@@ -115,6 +117,11 @@ if __name__ =='__main__':
                 if event.key == pygame.K_LEFT and jg.var_x < 0:
 
                     jg.var_x = 0
+
+
+        #Choque de balas contra el Escudo y limites
+        pygame.sprite.groupcollide(disparos, Escudos, True, True)
+        pygame.sprite.groupcollide(disparos, limites, True, False)
 
 
         pantalla.fill(NEGRO)
