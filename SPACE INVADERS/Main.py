@@ -6,7 +6,12 @@ from configuraciones import *
 from Fronteras import *
 from Escudo import *
 from Balas import *
+from funciones import *
+from Enemigos import *
 #from Enemys import *
+
+LIMITESUPERIOR = 68
+LIMITEINFERIOR= 610
 
 
 if __name__ =='__main__':
@@ -18,67 +23,73 @@ if __name__ =='__main__':
     #creamos  grupos
     jugadores = pygame.sprite.Group()
     limites = pygame.sprite.Group()
+    limitesEnemy = pygame.sprite.Group()
     Escudos = pygame.sprite.Group()
     vidas = pygame.sprite.Group()
     disparos = pygame.sprite.Group()
     disparosMaquina = pygame.sprite.Group()
     disparosJugador = pygame.sprite.Group()
-    general = pygame.sprite.Group()
+    EnemigosTipo1 = pygame.sprite.Group()
+    general1 = pygame.sprite.Group()#todos los sprites del nivel1
 
 
     #creamos jugador
     jg = Player('imagenes/nave1.png',3)
     jugadores.add(jg)
-    general.add(jg)
+    general1.add(jg)
 
-
-    #se crea y ubica el limite superior y inferior
-    superior =limite()
-    inferior = limite()
-    superior.setPos(0,68)
-    inferior.setPos(0,610)
-    limites.add(superior)
-    limites.add(inferior)
-    general.add(superior)
-    general.add(inferior)
 
 
     #se crean los escudos
-    for i in range(0,20):
-        for j in range(0,15):
-
-            es = Escudo()
-            es.setPos(75 + i*5,475 + j* 5)
-            general.add(es)
-            Escudos.add(es)
-
-            es = Escudo()
-            es.setPos(250 + i*5,475 + j* 5)
-            general.add(es)
-            Escudos.add(es)
-
-            es = Escudo()
-            es.setPos(425 + i*5,475 + j* 5)
-            general.add(es)
-            Escudos.add(es)
-
-            es = Escudo()
-            es.setPos(600 + i*5,475 + j* 5)
-            general.add(es)
-            Escudos.add(es)
-
+    Escudos = CreateEscudos(general1)
 
     #se crean las vidas del jugador
-    for vida in range(jg.vidas - 1):
-        v = Vida('imagenes/nave1.png')
-        v.rect.x = 5 + vida * 75
-        v.rect.y = ALTO - jg.rect.height
-        vidas.add(v)
-        general.add(v)
+    vidas = CreateVidas(general1,jg)
+
+    #creamos los enemigos todos fuera de la pantalla para el nivel 1
+    EnemigosTipo1 = CreateEnemigos1(general1)
+
+    #se crea y ubica el limite superior y inferior
+    superior =limite(NEGRO)
+    inferior = limite()
+    superior.setPos(0,LIMITESUPERIOR)
+    inferior.setPos(0,LIMITEINFERIOR)
+    limites.add(superior)
+    limites.add(inferior)
+    general1.add(superior)
+    general1.add(inferior)
+
+    derecha = limiteEnemigo(NEGRO)#estas fronteras estan hechas para que los enemigos se mantengan dentro de patnalla y se muevan de manera adecuada
+    derecha.setPos(799,0)
+    limitesEnemy.add(derecha)
+    general1.add(derecha)
+
+    izquierda = limiteEnemigo(NEGRO)
+    izquierda.setPos(-1,0)
+    limitesEnemy.add(izquierda)
+    general1.add(izquierda)
+
 
 
     reloj = pygame.time.Clock()
     fin  = False
+
+    #imagenes de inicio
+    Inicio1 = True
+    iniciar = False
+    recorrer = 85
+    Invaders =pygame.font.SysFont("comicsansms", 80)
+    Indicaciones =pygame.font.SysFont("comicsansms", 20)
+    Pulsacion =pygame.font.SysFont("comicsansms", 40)
+    Utp = pygame.image.load('imagenes/inicio.png').convert_alpha()
+
+
+    nivel1 = False
+    '''Puntos =pygame.font.SysFont("comicsansms", 80)
+    Indicaciones =pygame.font.SysFont("comicsansms", 20)
+    Invaders =pygame.font.SysFont("comicsansms", 80)
+    Indicaciones =pygame.font.SysFont("comicsansms", 20)'''
+
 
     print jg.rect.height
     while not fin:
@@ -88,7 +99,10 @@ if __name__ =='__main__':
                 fin=True
 
 
-            if event.type == pygame.KEYDOWN:
+            if event.type == pygame.KEYDOWN and Inicio1:
+                iniciar = True
+
+            if event.type == pygame.KEYDOWN and nivel1:
                 if event.key == pygame.K_RIGHT:
 
                     jg.var_x = 4
@@ -100,12 +114,13 @@ if __name__ =='__main__':
                 if event.key == pygame.K_SPACE:
 
                     if len(disparosJugador) == 0:
+                        jg.disparar()
                         bala = ProyectilJugador(2)
                         bala.rect.x = jg.rect.x + 22
                         bala.rect.y = jg.rect.y +5
                         disparosJugador.add(bala)
                         disparos.add(bala)
-                        general.add(bala)
+                        general1.add(bala)
                         jg.disparar()
 
 
@@ -118,15 +133,54 @@ if __name__ =='__main__':
 
                     jg.var_x = 0
 
+        #inicio de juego
+        if Inicio1:
+            pantalla.fill(NEGRO)
+            if not iniciar:
 
-        #Choque de balas contra el Escudo y limites
-        pygame.sprite.groupcollide(disparos, Escudos, True, True)
-        pygame.sprite.groupcollide(disparos, limites, True, False)
+                pantalla.blit(Utp,[150,100])
+                text1 = Invaders.render("INVADERS", True, BLANCO)
+                text2= Indicaciones.render("Use las flechas <- -> para moverse,  use espacio para disparar, PRIMER MUNDO DESRUYE", True, BLANCO)
+                text3 = Pulsacion.render("PRESIONE CUALQUIER TECLA PARA CONTINUAR",True, BLANCO)
+                pantalla.blit(text3,[50,420])
+                pantalla.blit(text1,[400,320])
+                pantalla.blit(text2,[0,600])
+
+            else:
+                pantalla.fill(NEGRO)
+
+                EnemigosTipo1.update(iniciar)
+                general1.update()
+                general1.draw(pantalla)
+                if recorrer == 0:
+                    Inicio1 =False
+                    iniciar = False
+                    nivel1 = True
+                recorrer-=1
+
+                #Se consigue comunicacion entre aliados
+                for e in EnemigosTipo1:
+                    for e2 in EnemigosTipo1:
+                        if e != e2:
+                            e.aliados.append(e2)
 
 
-        pantalla.fill(NEGRO)
-        general.update()
-        general.draw(pantalla)
+
+        if nivel1:
+            #Choque de balas contra el Escudo y limites
+            pygame.sprite.groupcollide(disparos, Escudos, True, True)
+            pygame.sprite.groupcollide(disparos, limites, True, False)
+
+            #choque entre muros y enemigos para bordear el area de juego cuando alguno choca con un muro todos cambian de direccion
+            col = pygame.sprite.groupcollide(EnemigosTipo1, limitesEnemy, False, False)
+            if len(col) > 0:
+                EnemigosTipo1.update(False, True)
+
+            pantalla.fill(NEGRO)
+
+
+            general1.update()
+            general1.draw(pantalla)
 
        # pantalla.blit(fondo,[0,0])
         pygame.display.flip()

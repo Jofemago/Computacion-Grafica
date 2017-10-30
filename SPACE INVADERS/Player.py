@@ -29,7 +29,7 @@ class Player(pygame.sprite.Sprite):
         self.image = pygame.image.load(img).convert()
         self.rect = self.image.get_rect()
         self.setPos(400,ALTO - 80)
-        self.disparo = pygame.mixer.Sound('Sonidos/disparojg.wav')
+        self.disparo = pygame.mixer.Sound('Sonidos/disparojg.ogg')
 
         #variables de movimiento
         self.var_x = 0

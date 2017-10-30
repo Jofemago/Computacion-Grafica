@@ -1,8 +1,10 @@
 
 '''
 en este archivo se almacenaran todas las caracteristicas de la pantalla, como los colores ancho y alto
+y funciones usadas para el trasncurso del juego
 
 '''
+
 ANCHO=800
 ALTO=650
 BLANCO=(255,255,255)
