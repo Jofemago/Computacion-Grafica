@@ -7,9 +7,7 @@ from configuraciones import *
 
 RUTAIMG = 'imagenes/'
 
-
-
-
+#recorta sprites de un lienzo de sprites
 def recortar(archivo, an , al):
     fondo = pygame.image.load(archivo).convert_alpha()
     info = fondo.get_size()
@@ -87,6 +85,7 @@ def CreateEnemigos1(general):
         for i in range(0,10):
 
             en = Enemigo1(10 + j * 10, i, SelectSprite(i))
+            #en = Enemigo1(35, i, SelectSprite(i))
             en.setPos( X + i * 60, Y + j * 55)
             general.add(en)
             Enemigos1.add(en)

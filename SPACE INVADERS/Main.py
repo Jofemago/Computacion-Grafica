@@ -163,10 +163,10 @@ if __name__ =='__main__':
                 recorrer-=1
 
                 #Se consigue comunicacion entre aliados
-                for e in EnemigosTipo1:
+                '''for e in EnemigosTipo1:
                     for e2 in EnemigosTipo1:
                         if e != e2:
-                            e.aliados.append(e2)
+                            e.aliados.append(e2)'''
 
 
 
@@ -181,7 +181,16 @@ if __name__ =='__main__':
                 EnemigosTipo1.update(False, True)
 
             #choque de balas con los enemigos
-            col = pygame.sprite.groupcollide(disparosJugador, EnemigosTipo1, True, True)
+            #col = pygame.sprite.groupcollide(disparosJugador, EnemigosTipo1, True, False)
+            #print col
+            for b in disparosJugador:
+                ls_col = pygame.sprite.spritecollide(b, EnemigosTipo1, False)
+                for e in ls_col:
+                    b.kill()
+                    e.muerto = True
+
+
+            
 
 
             pantalla.fill(NEGRO)

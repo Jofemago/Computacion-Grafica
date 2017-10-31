@@ -31,6 +31,7 @@ class Enemigo1(pygame.sprite.Sprite):
         self.movimiento = self.movs[0] #diferentes sonidos
 
         self.TiempoMov = 50 # tiempo de movimiento
+        #self.TiempoMov = 35
         self.temporizadormov = timeAct# temporizador que va disminuyedo con el tiempo
         self.dir  = True #indica la posicion de izquierda a derecha
 
@@ -39,9 +40,9 @@ class Enemigo1(pygame.sprite.Sprite):
         self.Bajo = False
         self.contbajar = 0
 
-        self.aliados = []
+        self.muerto = False
+        self.conteoMuerto = 20
 
-        self.Sprites = []
 
 
 
@@ -97,7 +98,10 @@ class Enemigo1(pygame.sprite.Sprite):
             #self.moverse() #sonido
             if self.mov > 1:
                 self.mov = 0
-            self.image = self.sprites[self.mov][self.color]
+            if self.muerto:
+                self.image = self.sprites[2][self.color]
+            else:
+                self.image = self.sprites[self.mov][self.color]
             self.mov += 1
         else:
             self.temporizadormov -= 1
@@ -118,7 +122,15 @@ class Enemigo1(pygame.sprite.Sprite):
 
 
         self.var_y = 10
-        if coli:
+        if self.muerto:
+            self.MovX()
+            self.image = self.sprites[2][3]
+            if self.conteoMuerto < 0:
+                self.kill()
+            else:
+                self.conteoMuerto -= 1
+
+        elif coli:
             self.CambiarDir()
             if self.bajar:
                 self.movY()
@@ -128,6 +140,7 @@ class Enemigo1(pygame.sprite.Sprite):
 
                 if self.TiempoMov <= 10: #aumentar la velociadad del enemigo conforme va bajando
                     self.TiempoMov -=2
+                    self.conteoMuerto -=1
                 else:
                     self.TiempoMov -= 10
 
