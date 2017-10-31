@@ -3,16 +3,31 @@ import random
 from Escudo import *
 from Player import *
 from Enemigos import *
+from configuraciones import *
 
 RUTAIMG = 'imagenes/'
-Enemy1 = 'Enemy1/'
-Enemy2 = 'Enemy2/'
-Enemy3 = 'Enemy3/'
 
-Colores = [['verde1.png','verde2.png'],
-            ['violeta1.png','violeta2.png'],
-            ['azul1.png','azul2.png'],
-            ['amarillo1.png','amarillo2.png']]
+
+
+
+def recortar(archivo, an , al):
+    fondo = pygame.image.load(archivo).convert_alpha()
+    info = fondo.get_size()
+    img_ancho = info[0]  #alto y ancho de cada sprite
+    img_alto = info[1]
+    corte_x = img_ancho /an
+    corte_y = img_alto/al
+
+    m = []
+    for i in range(an):
+        fila = []
+        for j in range(al):
+            cuadro = [i*corte_x,j*corte_y,corte_x,corte_y]
+            recorte = fondo.subsurface(cuadro)
+            fila.append(recorte)
+        m.append(fila)
+
+    return m
 
 
 def CreateEscudos(general):
@@ -53,6 +68,15 @@ def CreateVidas(general,jg):
         general.add(v)
     return vidas
 
+def SelectSprite(i):
+
+    if i == 0:
+        return recortar(Enemy2,3,4)
+    elif i >= 1 and i <= 2:
+        return recortar(Enemy2,3,4)
+    else:
+        return recortar(Enemy2,3,4)
+
 def CreateEnemigos1(general):
     Enemigos1 = pygame.sprite.Group()
     Y = -330
@@ -62,7 +86,7 @@ def CreateEnemigos1(general):
 
         for i in range(0,10):
 
-            en = Enemigo1(10 + j * 10, i)
+            en = Enemigo1(10 + j * 10, i, SelectSprite(i))
             en.setPos( X + i * 60, Y + j * 55)
             general.add(en)
             Enemigos1.add(en)

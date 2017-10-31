@@ -14,6 +14,8 @@ LIMITESUPERIOR = 68
 LIMITEINFERIOR= 610
 
 
+
+
 if __name__ =='__main__':
     pygame.init()
     pantalla=pygame.display.set_mode([ANCHO, ALTO])
@@ -91,7 +93,9 @@ if __name__ =='__main__':
     Indicaciones =pygame.font.SysFont("comicsansms", 20)'''
 
 
-    print jg.rect.height
+    #Sprites1 = CargarSprites(Enemy1, Colores)
+    #Sprites2 = CargarSprites(Enemy2, Colores)
+    #Sprites3 = CargarSprites(Enemy3, Colores)
     while not fin:
 
         for event in pygame.event.get():
@@ -114,7 +118,7 @@ if __name__ =='__main__':
                 if event.key == pygame.K_SPACE:
 
                     if len(disparosJugador) == 0:
-                        jg.disparar()
+                        #jg.disparar()
                         bala = ProyectilJugador(2)
                         bala.rect.x = jg.rect.x + 22
                         bala.rect.y = jg.rect.y +5
@@ -170,11 +174,15 @@ if __name__ =='__main__':
             #Choque de balas contra el Escudo y limites
             pygame.sprite.groupcollide(disparos, Escudos, True, True)
             pygame.sprite.groupcollide(disparos, limites, True, False)
-
+            #pantalla.draw(l[0][0],[0,0])
             #choque entre muros y enemigos para bordear el area de juego cuando alguno choca con un muro todos cambian de direccion
             col = pygame.sprite.groupcollide(EnemigosTipo1, limitesEnemy, False, False)
             if len(col) > 0:
                 EnemigosTipo1.update(False, True)
+
+            #choque de balas con los enemigos
+            col = pygame.sprite.groupcollide(disparosJugador, EnemigosTipo1, True, True)
+
 
             pantalla.fill(NEGRO)
 

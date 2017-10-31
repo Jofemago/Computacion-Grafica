@@ -26,7 +26,7 @@ class Player(pygame.sprite.Sprite):
 
 
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load(img).convert()
+        self.image = pygame.image.load(img).convert_alpha()
         self.rect = self.image.get_rect()
         self.setPos(400,ALTO - 80)
         self.disparo = pygame.mixer.Sound('Sonidos/disparojg.ogg')
