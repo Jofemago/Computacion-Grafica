@@ -96,6 +96,7 @@ if __name__ =='__main__':
     #Sprites1 = CargarSprites(Enemy1, Colores)
     #Sprites2 = CargarSprites(Enemy2, Colores)
     #Sprites3 = CargarSprites(Enemy3, Colores)
+    pausa = False
     while not fin:
 
         for event in pygame.event.get():
@@ -107,6 +108,9 @@ if __name__ =='__main__':
                 iniciar = True
 
             if event.type == pygame.KEYDOWN and nivel1:
+                if event.key == pygame.K_p:
+                    print "pausa"
+                    pausa = not pausa
                 if event.key == pygame.K_RIGHT:
 
                     jg.var_x = 4
@@ -170,7 +174,7 @@ if __name__ =='__main__':
 
 
 
-        if nivel1:
+        elif nivel1 and not pausa:
             #Choque de balas contra el Escudo y limites
             pygame.sprite.groupcollide(disparos, Escudos, True, True)
             pygame.sprite.groupcollide(disparos, limites, True, False)
@@ -189,8 +193,13 @@ if __name__ =='__main__':
                     b.kill()
                     e.muerto = True
 
+            '''for e in EnemigosTipo1:
+                if e.muerto:
+                    if e.conteoMuerto <= 0:
+                        e.kill()'''
 
-            
+
+
 
 
             pantalla.fill(NEGRO)

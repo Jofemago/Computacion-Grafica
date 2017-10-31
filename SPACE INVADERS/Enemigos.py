@@ -123,14 +123,13 @@ class Enemigo1(pygame.sprite.Sprite):
 
         self.var_y = 10
         if self.muerto:
-            self.MovX()
             self.image = self.sprites[2][3]
             if self.conteoMuerto < 0:
                 self.kill()
             else:
                 self.conteoMuerto -= 1
 
-        elif coli:
+        if coli:
             self.CambiarDir()
             if self.bajar:
                 self.movY()
