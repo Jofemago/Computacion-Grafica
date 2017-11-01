@@ -4,6 +4,16 @@ from Escudo import *
 from Player import *
 from Enemigos import *
 from configuraciones import *
+from Balas import *
+
+#reloj ascendente
+def relojAsc(f_con,f_tasa, fuente):
+    t_segundos = f_con// f_tasa
+    minutos = t_segundos // 60
+    segundos = t_segundos % 60
+    texto_reloj ='{0:02}:{1:02}'.format(minutos,segundos)
+    texto = fuente.render(texto_reloj,True, BLANCO)
+    return texto
 
 
 
@@ -98,6 +108,11 @@ def strpuntos(pt):
         return '0'+ str(pt)
     else:
         return str(pt)
+
+def CreateBalaEnemiga():
+    sprites =recortar('imagenes/balas/balasenemigas.png',2,4)
+    bala = ProyectilEnemigo(1,sprites)
+    return bala
 
 def CreateEnemigos1(general):
     Enemigos1 = pygame.sprite.Group()

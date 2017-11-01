@@ -32,11 +32,12 @@ if __name__ =='__main__':
     disparosMaquina = pygame.sprite.Group()
     disparosJugador = pygame.sprite.Group()
     EnemigosTipo1 = pygame.sprite.Group()
+    Enemigos = pygame.sprite.Group()
     general1 = pygame.sprite.Group()#todos los sprites del nivel1
 
 
     #creamos jugador
-    jg = Player('imagenes/nave1.png',3)
+    jg = Player('imagenes/nave1.png','imagenes/naveDestruida.png',3)
     jugadores.add(jg)
     general1.add(jg)
 
@@ -50,7 +51,8 @@ if __name__ =='__main__':
 
     #creamos los enemigos todos fuera de la pantalla para el nivel 1
     EnemigosTipo1 = CreateEnemigos1(general1)
-    Enemigos = CreateEnemigos1(general1) #enemigos globales
+    Enemigos.add(EnemigosTipo1)
+    #Enemigos = CreateEnemigos1(general1) #enemigos globales
 
     #se crea y ubica el limite superior y inferior
     superior =limite(NEGRO)
@@ -72,10 +74,6 @@ if __name__ =='__main__':
     limitesEnemy.add(izquierda)
     general1.add(izquierda)
 
-
-
-    reloj = pygame.time.Clock()
-    fin  = False
 
     #imagenes de inicio
     Inicio1 = True
@@ -101,6 +99,15 @@ if __name__ =='__main__':
     #Sprites3 = CargarSprites(Enemy3, Colores)
     JuegoPerdido = False
     pausa = False
+
+    #Manejo de reloj
+    f_con = 0
+    f_tasa = 60
+    fuentereloj = pygame.font.SysFont("comicsansms",50)
+
+
+    reloj = pygame.time.Clock()
+    fin  = False
     while not fin:
 
         for event in pygame.event.get():
@@ -126,6 +133,7 @@ if __name__ =='__main__':
                 if event.key == pygame.K_j:
                     print 'menos vidas'
                     jg.vidas -= 1
+                    jg.destrucion = True
 
                 if event.key == pygame.K_SPACE:
 
@@ -166,7 +174,7 @@ if __name__ =='__main__':
                 pantalla.fill(NEGRO)
 
                 EnemigosTipo1.update(iniciar)
-                Enemigos.add(EnemigosTipo1)
+                #Enemigos.add(EnemigosTipo1)
                 general1.update()
                 general1.draw(pantalla)
                 if recorrer == 0:
@@ -184,21 +192,31 @@ if __name__ =='__main__':
 
         elif pausa:
 
-            text1 = Marcador.render("STORE", True, BLANCO)
+            text1 = Marcador.render("SCORE", True, BLANCO)
             text2 = Puntuacion.render(strpuntos(puntos), True, BLANCO)
             text3 = Tipodejuego.render('PAUSADO', True, BLANCO)
+            textoreloj = fuentereloj.render("-- : --",True, BLANCO)
 
             pantalla.fill(NEGRO)
             pantalla.blit(text1,[25,10])
             pantalla.blit(text2, [50, 35])
             pantalla.blit(text3, [565, 10])
+            pantalla.blit(textoreloj,[300,10])
+
 
             #general1.update()
             general1.draw(pantalla)
         elif nivel1:
             #Choque de balas contra el Escudo y limites
             pygame.sprite.groupcollide(disparos, Escudos, True, True)
-            pygame.sprite.groupcollide(disparos, limites, True, False)
+            #pygame.sprite.groupcollide(disparos, limites, True, False)
+            for bala in disparos:
+                ls_col = pygame.sprite.spritecollide(bala, limites, False)
+                if len(ls_col) > 0:
+                        bala.choque = True
+
+
+
             #pantalla.draw(l[0][0],[0,0])
             #choque entre muros y enemigos para bordear el area de juego cuando alguno choca con un muro todos cambian de direccion
             col = pygame.sprite.groupcollide(EnemigosTipo1, limitesEnemy, False, False)
@@ -241,6 +259,15 @@ if __name__ =='__main__':
                 nivel1 = False
                 nivel2= True
 
+            ls_col = pygame.sprite.spritecollide(jg, EnemigosTipo1, False)
+            if len(ls_col) > 0:
+                JuegoPerdido = True
+                nivel1 = False
+
+            #contador tiempo
+            textoreloj = relojAsc(f_con,f_tasa,fuentereloj)
+
+
 
 
             text1 = Marcador.render("SCORE", True, BLANCO)
@@ -251,9 +278,11 @@ if __name__ =='__main__':
             pantalla.blit(text1,[25,10])
             pantalla.blit(text2, [50, 35])
             pantalla.blit(text3, [565, 10])
+            pantalla.blit(textoreloj,[300,10])
 
             general1.update()
             general1.draw(pantalla)
+            f_con += 1 #aumento el tiempo
         elif nivel2:
             pantalla.fill(NEGRO)
             text1 = Invaders.render("ESTE ES EL NIVEL 2", True, BLANCO)
@@ -268,4 +297,4 @@ if __name__ =='__main__':
 
        # pantalla.blit(fondo,[0,0])
         pygame.display.flip()
-        reloj.tick(60)
+        reloj.tick(f_tasa)

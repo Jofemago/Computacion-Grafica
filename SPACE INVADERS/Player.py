@@ -6,6 +6,8 @@ y dispara
 import pygame
 from configuraciones import *
 
+TIEMPODESTRUCION = 8
+
 
 class Vida(pygame.sprite.Sprite):
     def __init__(self, img):
@@ -22,11 +24,13 @@ class Vida(pygame.sprite.Sprite):
 
 class Player(pygame.sprite.Sprite):
 
-    def __init__(self,img, vidas = 3,  col = AZUL):
+    def __init__(self,img, imgdestru, vidas = 3,  col = AZUL):
 
 
         pygame.sprite.Sprite.__init__(self)
+        self.img = pygame.image.load(img).convert_alpha()
         self.image = pygame.image.load(img).convert_alpha()
+        self.imagedestruida = pygame.image.load(imgdestru).convert_alpha()
         self.rect = self.image.get_rect()
         self.setPos(400,ALTO - 80)
         self.disparo = pygame.mixer.Sound('Sonidos/disparojg.ogg')
@@ -35,6 +39,10 @@ class Player(pygame.sprite.Sprite):
         self.var_x = 0
 
         self.vidas = vidas
+
+        #tiempo que durara destruida
+        self.destrucion = False
+        self.tiempodes = TIEMPODESTRUCION
 
     def disparar(self):
         self.disparo.play()
@@ -66,5 +74,12 @@ class Player(pygame.sprite.Sprite):
 
 
     def update(self):
-
-        self.movX()
+        if self.destrucion:
+            self.image = self.imagedestruida
+            if self.tiempodes <= 0:
+                self.image = self.img
+                self.destrucion = False
+                self.tiempodes = TIEMPODESTRUCION
+            self.tiempodes -= 1
+        else:
+            self.movX()
