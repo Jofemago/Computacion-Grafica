@@ -243,7 +243,7 @@ if __name__ =='__main__':
 
 
 
-            text1 = Marcador.render("STORE", True, BLANCO)
+            text1 = Marcador.render("SCORE", True, BLANCO)
             text2 = Puntuacion.render(strpuntos(puntos), True, BLANCO)
             text3 = Tipodejuego.render('DESTRUYE', True, BLANCO)
 
