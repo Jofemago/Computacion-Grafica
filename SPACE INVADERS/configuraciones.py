@@ -14,6 +14,6 @@ AZUL=(0,0,255)
 VERDE=(0,255,0)
 
 
-Enemy1 = 'Enemy2/Enemy.png'
-Enemy2 = 'Enemy2/Enemy.png'
-Enemy3 = 'Enemy2/Enemy.png'
+Enemy1 = 'imagenes/Enemy1/Enemy.png'
+Enemy2 = 'imagenes/Enemy2/Enemy.png'
+Enemy3 = 'imagenes/Enemy3/Enemy.png'

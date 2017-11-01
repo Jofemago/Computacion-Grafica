@@ -136,7 +136,7 @@ if __name__ =='__main__':
     f_con = 0
     f_tasa = 30
     fuente = pygame.font.Font(None,36)
-    t_ini = 8
+    t_ini = 60
     fin_juego = False
 
     while not fin:

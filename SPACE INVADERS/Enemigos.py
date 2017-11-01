@@ -11,7 +11,7 @@ class Enemigo1(pygame.sprite.Sprite):
 
 
 
-    def __init__(self,timeAct,row,sprites, col = ROJO):
+    def __init__(self,timeAct,row,sprites, puntos, col = ROJO):
         pygame.sprite.Sprite.__init__(self)
 
         self.row = row
@@ -25,7 +25,7 @@ class Enemigo1(pygame.sprite.Sprite):
 
         self.rect = self.image.get_rect()
         self.var_y = 0
-        self.var_x = 10
+        self.var_x = 8
         self.m = 0
         self.movs = [pygame.mixer.Sound('Sonidos/movimiento1.wav'),pygame.mixer.Sound('Sonidos/movimiento2.wav'),pygame.mixer.Sound('Sonidos/movimiento3.wav'),pygame.mixer.Sound('Sonidos/movimiento4.wav')]
         self.movimiento = self.movs[0] #diferentes sonidos
@@ -42,6 +42,8 @@ class Enemigo1(pygame.sprite.Sprite):
 
         self.muerto = False
         self.conteoMuerto = 20
+
+        self.points = puntos
 
 
 

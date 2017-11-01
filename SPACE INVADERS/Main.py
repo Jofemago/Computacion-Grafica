@@ -79,7 +79,7 @@ if __name__ =='__main__':
     #imagenes de inicio
     Inicio1 = True
     iniciar = False
-    recorrer = 85
+    recorrer = 95
     Invaders =pygame.font.SysFont("comicsansms", 80)
     Indicaciones =pygame.font.SysFont("comicsansms", 20)
     Pulsacion =pygame.font.SysFont("comicsansms", 40)
@@ -87,10 +87,11 @@ if __name__ =='__main__':
 
 
     nivel1 = False
-    '''Puntos =pygame.font.SysFont("comicsansms", 80)
-    Indicaciones =pygame.font.SysFont("comicsansms", 20)
-    Invaders =pygame.font.SysFont("comicsansms", 80)
-    Indicaciones =pygame.font.SysFont("comicsansms", 20)'''
+    puntos = 0
+    Marcador =pygame.font.SysFont("comicsansms", 35)
+    Puntuacion =pygame.font.SysFont("comicsansms", 25)
+    Tipodejuego =pygame.font.SysFont("comicsansms", 60)
+    #Indicaciones =pygame.font.SysFont("comicsansms", 20)
 
 
     #Sprites1 = CargarSprites(Enemy1, Colores)
@@ -173,8 +174,20 @@ if __name__ =='__main__':
                             e.aliados.append(e2)'''
 
 
+        elif pausa:
 
-        elif nivel1 and not pausa:
+            text1 = Marcador.render("STORE", True, BLANCO)
+            text2 = Puntuacion.render(strpuntos(puntos), True, BLANCO)
+            text3 = Tipodejuego.render('PAUSADO', True, BLANCO)
+
+            pantalla.fill(NEGRO)
+            pantalla.blit(text1,[25,10])
+            pantalla.blit(text2, [50, 35])
+            pantalla.blit(text3, [565, 10])
+
+            #general1.update()
+            general1.draw(pantalla)
+        elif nivel1:
             #Choque de balas contra el Escudo y limites
             pygame.sprite.groupcollide(disparos, Escudos, True, True)
             pygame.sprite.groupcollide(disparos, limites, True, False)
@@ -192,6 +205,7 @@ if __name__ =='__main__':
                 for e in ls_col:
                     b.kill()
                     e.muerto = True
+                    puntos += e.points
 
             '''for e in EnemigosTipo1:
                 if e.muerto:
@@ -200,13 +214,19 @@ if __name__ =='__main__':
 
 
 
-
+            text1 = Marcador.render("STORE", True, BLANCO)
+            text2 = Puntuacion.render(strpuntos(puntos), True, BLANCO)
+            text3 = Tipodejuego.render('DESTRUYE', True, BLANCO)
 
             pantalla.fill(NEGRO)
-
+            pantalla.blit(text1,[25,10])
+            pantalla.blit(text2, [50, 35])
+            pantalla.blit(text3, [565, 10])
 
             general1.update()
             general1.draw(pantalla)
+
+
 
        # pantalla.blit(fondo,[0,0])
         pygame.display.flip()

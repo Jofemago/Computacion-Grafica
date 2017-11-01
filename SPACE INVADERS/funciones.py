@@ -5,7 +5,7 @@ from Player import *
 from Enemigos import *
 from configuraciones import *
 
-RUTAIMG = 'imagenes/'
+
 
 #recorta sprites de un lienzo de sprites
 def recortar(archivo, an , al):
@@ -27,7 +27,7 @@ def recortar(archivo, an , al):
 
     return m
 
-
+#crea los escudo
 def CreateEscudos(general):
     Escudos = pygame.sprite.Group()
     Y = 490
@@ -56,6 +56,7 @@ def CreateEscudos(general):
     return Escudos
 
 
+#crear las vidas
 def CreateVidas(general,jg):
     vidas = pygame.sprite.Group()
     for vida in range(jg.vidas - 1):
@@ -69,11 +70,34 @@ def CreateVidas(general,jg):
 def SelectSprite(i):
 
     if i == 0:
-        return recortar(Enemy2,3,4)
+        return recortar(Enemy1,3,4)
     elif i >= 1 and i <= 2:
         return recortar(Enemy2,3,4)
     else:
-        return recortar(Enemy2,3,4)
+        return recortar(Enemy3,3,4)
+
+
+def SelectPuntos(i):
+
+    if i == 0:
+        return 30
+    elif i >= 1 and i <= 2:
+        return 20
+    else:
+        return 10
+
+
+#aseguro que las puntuaciones sean de 4 numeros o mas si es el caso
+def strpuntos(pt):
+
+    if pt <10:
+        return '000'+ str(pt)
+    elif pt >= 10  and pt <= 99:
+        return '00'+ str(pt)
+    elif pt >= 100 and pt <= 999:
+        return '0'+ str(pt)
+    else:
+        return str(pt)
 
 def CreateEnemigos1(general):
     Enemigos1 = pygame.sprite.Group()
@@ -84,7 +108,7 @@ def CreateEnemigos1(general):
 
         for i in range(0,10):
 
-            en = Enemigo1(10 + j * 10, i, SelectSprite(i))
+            en = Enemigo1(10 + j * 10, i, SelectSprite(j), SelectPuntos(j))
             #en = Enemigo1(35, i, SelectSprite(i))
             en.setPos( X + i * 60, Y + j * 55)
             general.add(en)
