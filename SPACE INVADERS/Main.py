@@ -77,8 +77,8 @@ if __name__ =='__main__':
 
 
     #imagenes de inicio
-    Inicio1 = True
-    inicio2 = False #cuando se active da inicio al nivel 2
+    Inicio1 = False
+    inicio2 = True #cuando se active da inicio al nivel 2
     iniciar = False
     recorrer = 95
     Invaders =pygame.font.SysFont("comicsansms", 80)
@@ -90,7 +90,7 @@ if __name__ =='__main__':
 
 
     nivel1 = False
-    
+
     puntos = 0
     Marcador =pygame.font.SysFont("comicsansms", 35)
     Puntuacion =pygame.font.SysFont("comicsansms", 25)
@@ -240,7 +240,7 @@ if __name__ =='__main__':
 
 
 
-            
+
 
             #cuando un enemigo toque el esucudo lo destruira
             pygame.sprite.groupcollide(EnemigosTipo1, Escudos, False, True)
@@ -341,7 +341,7 @@ if __name__ =='__main__':
             general1.draw(pantalla)
             f_con += 1 #aumento el tiempo
         elif inicio2:
-            
+
             if not iniciar:
 
                 pantalla.fill(NEGRO)
@@ -359,7 +359,7 @@ if __name__ =='__main__':
                 text3 = Pulsacion.render("Puntuacion =" + str(puntos),True, BLANCO)
                 pantalla.blit(text3,[250,250])
 
-                
+
                 text1 = Invaders.render("SEGUNDO NIVEL", True, BLANCO)
                 text2= Indicaciones.render("Use las flechas <- -> para moverse,  use espacio para disparar, SEGUNDO MUNDO SOBREVIVE", True, BLANCO)
                 text3 = Pulsacion.render("PRESIONE CUALQUIER TECLA PARA CONTINUAR",True, BLANCO)
@@ -385,9 +385,18 @@ if __name__ =='__main__':
                 EnemigosTipo1.empty()
                 EnemigosTipo2.empty()
                 Enemigos.empty()
+                Enemigos.add(EnemigosTipo1)
+                Enemigos.add(jefe)
                 general1.add(jefe)
                 EnemigosTipo2.add(jefe)
         elif nivel2:
+
+            #introducir enemigos en el jeugo
+            if jefe.introducir:
+                jefe.introducir = False
+                jefe.tiempoBase -= 25
+                jefe.tiempoIntro = jefe.tiempoBase
+                print 'enemigo'
 
             #choque entre muros y enemigo para que cuando llegue a la esquina baje
             col = pygame.sprite.groupcollide(EnemigosTipo1, limitesEnemy, False, False)
@@ -410,7 +419,7 @@ if __name__ =='__main__':
             #col = pygame.sprite.groupcollide(disparosJugador, EnemigosTipo1, True, False)
             #print col
             for b in disparosJugador:
-                ls_col = pygame.sprite.spritecollide(b, EnemigosTipo1, False)
+                ls_col = pygame.sprite.spritecollide(b, Enemigos, False)
                 for e in ls_col:
                     b.kill()
                     e.muerto = True
@@ -470,7 +479,7 @@ if __name__ =='__main__':
             general1.update()
             general1.draw(pantalla)
 
-                
+
 
         elif JuegoPerdido:
             pantalla.fill(NEGRO)

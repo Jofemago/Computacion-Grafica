@@ -18,6 +18,10 @@ class Jefe(pygame.sprite.Sprite):
         else:
             self.rect.x = 0'''
         self.rect.x = 100
+        self.points = 50
+        self.introducir = False
+        self.tiempoBase = 500
+        self.tiempoIntro = self.tiempoBase
 
 
 
@@ -39,6 +43,10 @@ class Jefe(pygame.sprite.Sprite):
                 self.rect.x = ANCHO - self.rect.width
                 self.dir = not self.dir
         self.MovX()
+        if self.tiempoIntro <= 0:
+            self.tiempoIntro = self.tiempoBase
+            self.introducir = True
+        self.tiempoIntro -= 1
 
 class Enemigo2(pygame.sprite.Sprite):
 
