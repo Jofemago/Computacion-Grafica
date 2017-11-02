@@ -67,18 +67,22 @@ class ProyectilEnemigo(pygame.sprite.Sprite):
         elif self.rect.y > 350:
             self.color = 0
 
+    def movY(self):
+        self.calcularColor() #calculo el color de bajada con el que los sprites se deben presentar
+        self.rect.y += self.var_y
+        if self.mov > 1:
+            self.mov = 0
+        self.image = self.sprites[self.mov][self.color]
+        self.mov +=1
+
     def update(self):
 
         if self.choque:
             self.image = self.imgdestr
-            self.rect.y = 70
+            self.rect.y = 608
             if self.TiempoDesaparece <= 0:
                 self.kill()
             self.TiempoDesaparece -= 1
-        elif self.dir == 2: #abajo arriba
 
-            self.rect.y  -= self.var_y
-
-        elif self.dir == 1:#arriba a abajo
-
-            self.rect.y  += self.var_y
+        else:
+            self.movY()

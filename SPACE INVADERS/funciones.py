@@ -6,6 +6,8 @@ from Enemigos import *
 from configuraciones import *
 from Balas import *
 
+
+
 #reloj ascendente
 def relojAsc(f_con,f_tasa, fuente):
     t_segundos = f_con// f_tasa
@@ -109,9 +111,11 @@ def strpuntos(pt):
     else:
         return str(pt)
 
+
+
 def CreateBalaEnemiga():
-    sprites =recortar('imagenes/balas/balasenemigas.png',2,4)
-    bala = ProyectilEnemigo(1,sprites)
+    spritesbalas =recortar('imagenes/balas/balasenemigas.png',2,4)
+    bala = ProyectilEnemigo(1,spritesbalas)
     return bala
 
 def CreateEnemigos1(general):

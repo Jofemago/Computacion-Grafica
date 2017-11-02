@@ -4,6 +4,67 @@ from configuraciones import *
 from funciones import *
 
 
+class Jefe(pygame.sprite.Sprite):
+
+    def __init__(self,dir):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load('imagenes/EnemyCasual/EnemyBonus.png').convert_alpha()
+        self.rect = self.image.get_rect()
+        self.dir = dir
+        self.rect.y = 70
+        self.var_x = 3
+        if self.dir:
+            self.rect.x = ANCHO
+        else:
+            self.rect.x = 0
+
+
+
+        def MovX():
+            if self.dir:
+                self.rect.x -= self.var_x
+            else:
+                self.rect.x += self.var_x
+
+    def update(self):
+
+        self.rect.x += self.var_x
+        if self.dir:
+            if self.rect.x <= 0:
+                self.rect.x = 0
+                self.dir = not self.dir
+        else:
+            if self.rect.x > ANCHO - self.rect.width:
+                self.rect.x = ANCHO - self.rect.width
+                self.dir = self.dir
+        self.movX()
+
+class Enemigo2(pygame.sprite.Sprite):
+
+    def __init__(self,dir):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load('imagenes/EnemyCasual/EnemyBonus.png').convert_alpha()
+        self.rect = self.image.get_rect()
+        self.dir = dir
+        self.rect.y = 70
+        self.var_x = 0
+        if self.dir :
+            self.rect.x = ANCHO
+            self.var_x = -3
+        else:
+            self.rect.x = 0 - self.rect.width
+            self.var_x = 3
+
+    def update(self):
+
+        self.rect.x += self.var_x
+        if self.dir:
+            if self.rect.x < 0 - self.rect.width:
+                self.kill()
+        else:
+            if self.rect.x > ANCHO:
+                self.kill()
+
 
 
 
@@ -40,10 +101,14 @@ class Enemigo1(pygame.sprite.Sprite):
         self.Bajo = False
         self.contbajar = 0
 
+        #momento en que muere y tiempo que tiene que esperar para desaparecer
         self.muerto = False
         self.conteoMuerto = 20
 
         self.points = puntos
+
+        self.timeDisparo = random.randrange(100, 500) #tiempo para disparar
+        self.disparo = False
 
 
 
@@ -130,6 +195,13 @@ class Enemigo1(pygame.sprite.Sprite):
                 self.kill()
             else:
                 self.conteoMuerto -= 1
+        else:
+            #calculo el disparo en caso tal que no este muerto  y vuelvo y calculo un nuevo tiempo aleatorio para disparar
+            if self.timeDisparo <= 0:
+                self.disparo = True
+                #self.timeDisparo = random.randrange(200, 1000) #tiempo para disparar
+                self.timeDisparo = 500
+
 
         if coli:
             self.CambiarDir()
@@ -158,3 +230,4 @@ class Enemigo1(pygame.sprite.Sprite):
                 self.bajar = True
             else:
                 self.contbajar+=1
+        self.timeDisparo -= 1 #disminuyo el tiempo de disparo

@@ -32,6 +32,7 @@ if __name__ =='__main__':
     disparosMaquina = pygame.sprite.Group()
     disparosJugador = pygame.sprite.Group()
     EnemigosTipo1 = pygame.sprite.Group()
+    EnemigosTipo2 = pygame.sprite.Group() #donde van almacenados los bonus
     Enemigos = pygame.sprite.Group()
     general1 = pygame.sprite.Group()#todos los sprites del nivel1
 
@@ -77,6 +78,7 @@ if __name__ =='__main__':
 
     #imagenes de inicio
     Inicio1 = True
+    inicio2 = False #cuando se active da inicio al nivel 2
     iniciar = False
     recorrer = 95
     Invaders =pygame.font.SysFont("comicsansms", 80)
@@ -92,6 +94,8 @@ if __name__ =='__main__':
     Puntuacion =pygame.font.SysFont("comicsansms", 25)
     Tipodejuego =pygame.font.SysFont("comicsansms", 60)
     #Indicaciones =pygame.font.SysFont("comicsansms", 20)
+    bonus = True #defino direccion inicial del bonis
+    tiempobonus = 1000
 
 
     #Sprites1 = CargarSprites(Enemy1, Colores)
@@ -117,6 +121,8 @@ if __name__ =='__main__':
 
             if event.type == pygame.KEYDOWN and Inicio1:
                 iniciar = True
+            if event.type == pygame.KEYDOWN and inicio2:
+                iniciar = True
 
             if event.type == pygame.KEYDOWN and (nivel1 or nivel2):
                 if event.key == pygame.K_p:
@@ -129,11 +135,6 @@ if __name__ =='__main__':
                 if event.key == pygame.K_LEFT:
 
                     jg.var_x = -4
-
-                if event.key == pygame.K_j:
-                    print 'menos vidas'
-                    jg.vidas -= 1
-                    jg.destrucion = True
 
                 if event.key == pygame.K_SPACE:
 
@@ -206,10 +207,12 @@ if __name__ =='__main__':
 
             #general1.update()
             general1.draw(pantalla)
+        #nivel1 del juego
         elif nivel1:
             #Choque de balas contra el Escudo y limites
             pygame.sprite.groupcollide(disparos, Escudos, True, True)
-            #pygame.sprite.groupcollide(disparos, limites, True, False)
+
+            #vvalido que las balas no salgan de los limites
             for bala in disparos:
                 ls_col = pygame.sprite.spritecollide(bala, limites, False)
                 if len(ls_col) > 0:
@@ -222,6 +225,7 @@ if __name__ =='__main__':
             col = pygame.sprite.groupcollide(EnemigosTipo1, limitesEnemy, False, False)
             if len(col) > 0:
                 EnemigosTipo1.update(False, True)
+            #para el segundo mundo redisenar este con un ciclo individual de sprites OJOOOOOOOOOO
 
             #cuando un enemigo toque el esucudo lo destruira
             pygame.sprite.groupcollide(EnemigosTipo1, Escudos, False, True)
@@ -240,10 +244,31 @@ if __name__ =='__main__':
                     e.muerto = True
                     puntos += e.points
 
-            '''for e in EnemigosTipo1:
-                if e.muerto:
-                    if e.conteoMuerto <= 0:
-                        e.kill()'''
+
+            #disparos maquina
+            #choque de las balas Enemigas con las balas jugadores
+            col = pygame.sprite.groupcollide(disparosMaquina, disparosJugador, True, True)
+            puntos += len(col)
+
+            #Disparos de la maquina
+            for rival in EnemigosTipo1:
+
+                if rival.disparo == True:
+
+                    b = CreateBalaEnemiga()
+                    b.rect.x = rival.rect.x+ 25
+                    b.rect.y = rival.rect.y + 50
+                    disparosMaquina.add(b)
+                    disparos.add(b)
+                    general1.add(b)
+                    rival.disparo = False
+
+            #colision de los disparos maquina con el jugadores
+            ls_col = pygame.sprite.spritecollide(jg, disparosMaquina, True)
+            for e in ls_col:
+                jg.vidas -= 1
+                jg.destrucion = True
+
 
             #Redibujar vidas
             for v in vidas:
@@ -257,7 +282,7 @@ if __name__ =='__main__':
 
             if len(EnemigosTipo1) == 0:
                 nivel1 = False
-                nivel2= True
+                inicio2= True
 
             ls_col = pygame.sprite.spritecollide(jg, EnemigosTipo1, False)
             if len(ls_col) > 0:
@@ -267,6 +292,23 @@ if __name__ =='__main__':
             #contador tiempo
             textoreloj = relojAsc(f_con,f_tasa,fuentereloj)
 
+            #manejo del bonus
+            if tiempobonus <= 0:
+                tiempobonus = 1000
+                e = Enemigo2(bonus)
+                EnemigosTipo2.add(e)
+                Enemigos.add(e)
+                general1.add(e)
+                bonus = not bonus
+            tiempobonus -= 1
+
+            #colision con el bonus
+            for b in disparosJugador:
+                ls_col = pygame.sprite.spritecollide(b, EnemigosTipo2, True)
+                if len(ls_col) > 0:
+                    b.kill()
+                    for e in ls_col:
+                        jg.vidas += 1
 
 
 
@@ -283,7 +325,7 @@ if __name__ =='__main__':
             general1.update()
             general1.draw(pantalla)
             f_con += 1 #aumento el tiempo
-        elif nivel2:
+        elif inicio2:
             pantalla.fill(NEGRO)
             text1 = Invaders.render("ESTE ES EL NIVEL 2", True, BLANCO)
             pantalla.blit(text1, [50, 35])
