@@ -13,22 +13,23 @@ class Jefe(pygame.sprite.Sprite):
         self.dir = dir
         self.rect.y = 70
         self.var_x = 3
-        if self.dir:
+        '''if self.dir:
             self.rect.x = ANCHO
         else:
-            self.rect.x = 0
+            self.rect.x = 0'''
+        self.rect.x = 100
 
 
 
-        def MovX():
-            if self.dir:
-                self.rect.x -= self.var_x
-            else:
-                self.rect.x += self.var_x
+    def MovX(self):
+        if self.dir:
+            self.rect.x -= self.var_x
+        else:
+            self.rect.x += self.var_x
 
     def update(self):
 
-        self.rect.x += self.var_x
+        #self.rect.x += self.var_x
         if self.dir:
             if self.rect.x <= 0:
                 self.rect.x = 0
@@ -36,8 +37,8 @@ class Jefe(pygame.sprite.Sprite):
         else:
             if self.rect.x > ANCHO - self.rect.width:
                 self.rect.x = ANCHO - self.rect.width
-                self.dir = self.dir
-        self.movX()
+                self.dir = not self.dir
+        self.MovX()
 
 class Enemigo2(pygame.sprite.Sprite):
 
