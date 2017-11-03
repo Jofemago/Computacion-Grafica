@@ -12,7 +12,7 @@ from Enemigos import *
 
 LIMITESUPERIOR = 68
 LIMITEINFERIOR= 610
-
+TIEMPOSEGUNDOMUNDO = 120
 
 
 
@@ -77,8 +77,8 @@ if __name__ =='__main__':
 
 
     #imagenes de inicio
-    Inicio1 = False
-    inicio2 = True #cuando se active da inicio al nivel 2
+    Inicio1 = True
+    inicio2 = False #cuando se active da inicio al nivel 2
     iniciar = False
     recorrer = 95
     Invaders =pygame.font.SysFont("comicsansms", 80)
@@ -108,9 +108,11 @@ if __name__ =='__main__':
     #Sprites2 = CargarSprites(Enemy2, Colores)
     #Sprites3 = CargarSprites(Enemy3, Colores)
     JuegoPerdido = False
+    Gano = False
     pausa = False
 
     #Manejo de reloj
+    t_ini = TIEMPOSEGUNDOMUNDO # dos minutos
     f_con = 0
     f_tasa = 60
     fuentereloj = pygame.font.SysFont("comicsansms",50)
@@ -216,6 +218,16 @@ if __name__ =='__main__':
             #general1.update()
             general1.draw(pantalla)
         #nivel1 del juego
+        elif Gano:
+            pantalla.fill(NEGRO)
+            pantalla.blit(Utp,[150,100])
+            text1 = Invaders.render("INVADERS", True, BLANCO)
+            text2= Indicaciones.render("hecho por JOHAN FELIPE MARIN GONZALEZ, ganaste y recuerda tu puntaje es : "+ str(puntos), True, BLANCO)
+            text3 = Pulsacion.render("TE DA LAS GRACIAS, NOS SALVASTE",True, BLANCO)
+            pantalla.blit(text3,[50,420])
+            pantalla.blit(text1,[400,320])
+            pantalla.blit(text2,[0,600])
+
         elif nivel1:
 
 
@@ -376,8 +388,8 @@ if __name__ =='__main__':
                 general1.add(jg)
                 general1.add(limites)
                 general1.add(limitesEnemy)
-                Escudos.empty()
-                Escudos = CreateEscudos(general1)
+                #Escudos.empty()
+                #Escudos = CreateEscudos(general1)
                 general1.add(Escudos)
                 disparos.empty()
                 disparosJugador.empty()
@@ -389,14 +401,24 @@ if __name__ =='__main__':
                 Enemigos.add(jefe)
                 general1.add(jefe)
                 EnemigosTipo2.add(jefe)
+                f_con = 0
         elif nivel2:
+
+
 
             #introducir enemigos en el jeugo
             if jefe.introducir:
                 jefe.introducir = False
-                jefe.tiempoBase -= 25
+                #jefe.tiempoBase -= 25
                 jefe.tiempoIntro = jefe.tiempoBase
-                print 'enemigo'
+                X = jefe.rect.x
+                Y = jefe.rect.y
+                en = CreateEnemy1(X + 50,Y+ 60, 0, 0)
+                en.temporizadormov = 0
+                en.tiempoMov = 0
+                general1.add(en)
+                EnemigosTipo1.add(en)
+                Enemigos.add(en)
 
             #choque entre muros y enemigo para que cuando llegue a la esquina baje
             col = pygame.sprite.groupcollide(EnemigosTipo1, limitesEnemy, False, False)
@@ -464,6 +486,22 @@ if __name__ =='__main__':
                 JuegoPerdido = True
                 nivel2 = False
 
+
+            #manejo del reloj descendente
+            t_segundos = t_ini - (f_con// f_tasa)
+            minutos = t_segundos // 60
+            segundos = t_segundos % 60
+            texto_reloj ='{0:02}:{1:02}'.format(minutos,segundos)
+            textoreloj = None
+            if t_segundos <= 5:
+                textoreloj = fuentereloj.render(texto_reloj,True, ROJO)
+            else:
+                textoreloj = fuentereloj.render(texto_reloj,True, BLANCO)
+
+            if t_segundos <= 0:
+                Gano = True
+                nivel2 = False
+
             text1 = Marcador.render("SCORE", True, BLANCO)
             text2 = Puntuacion.render(strpuntos(puntos), True, BLANCO)
             text3 = Tipodejuego.render('SOBREVIVE', True, BLANCO)
@@ -472,12 +510,14 @@ if __name__ =='__main__':
             pantalla.blit(text1,[25,10])
             pantalla.blit(text2, [50, 35])
             pantalla.blit(text3, [560, 10])
+            pantalla.blit(textoreloj,[300,10])
 
 
 
 
             general1.update()
             general1.draw(pantalla)
+            f_con +=1
 
 
 

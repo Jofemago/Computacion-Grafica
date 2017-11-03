@@ -7,7 +7,7 @@ class ProyectilJugador(pygame.sprite.Sprite):
     def __init__(self, dir, col = VERDE):
         pygame.sprite.Sprite.__init__(self)
         self.imgdestr = pygame.image.load('imagenes/destrbala.png').convert()
-        self.image = pygame.Surface([3, 10])
+        self.image = pygame.Surface([5, 10])
         self.image.fill(col)
         self.rect = self.image.get_rect()
         self.dir = dir

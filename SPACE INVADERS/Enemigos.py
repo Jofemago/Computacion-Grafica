@@ -20,7 +20,7 @@ class Jefe(pygame.sprite.Sprite):
         self.rect.x = 100
         self.points = 50
         self.introducir = False
-        self.tiempoBase = 500
+        self.tiempoBase = 200
         self.tiempoIntro = self.tiempoBase
 
 
@@ -30,6 +30,8 @@ class Jefe(pygame.sprite.Sprite):
             self.rect.x -= self.var_x
         else:
             self.rect.x += self.var_x
+
+
 
     def update(self):
 
@@ -44,6 +46,7 @@ class Jefe(pygame.sprite.Sprite):
                 self.dir = not self.dir
         self.MovX()
         if self.tiempoIntro <= 0:
+
             self.tiempoIntro = self.tiempoBase
             self.introducir = True
         self.tiempoIntro -= 1
@@ -75,13 +78,13 @@ class Enemigo2(pygame.sprite.Sprite):
                 self.kill()
 
 
-
+#def EnemigoNivel2()
 
 class Enemigo1(pygame.sprite.Sprite):
 
 
 
-    def __init__(self,timeAct,row,sprites, puntos, col = ROJO):
+    def __init__(self,timeAct,row,sprites, puntos, tiempo,col = ROJO):
         pygame.sprite.Sprite.__init__(self)
 
         self.row = row
@@ -100,7 +103,7 @@ class Enemigo1(pygame.sprite.Sprite):
         self.movs = [pygame.mixer.Sound('Sonidos/movimiento1.wav'),pygame.mixer.Sound('Sonidos/movimiento2.wav'),pygame.mixer.Sound('Sonidos/movimiento3.wav'),pygame.mixer.Sound('Sonidos/movimiento4.wav')]
         self.movimiento = self.movs[0] #diferentes sonidos
 
-        self.TiempoMov = 50 # tiempo de movimiento
+        self.TiempoMov = tiempo # tiempo de movimiento
         #self.TiempoMov = 35
         self.temporizadormov = timeAct# temporizador que va disminuyedo con el tiempo
         self.dir  = True #indica la posicion de izquierda a derecha

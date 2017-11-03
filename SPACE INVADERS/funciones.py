@@ -118,6 +118,15 @@ def CreateBalaEnemiga():
     bala = ProyectilEnemigo(1,spritesbalas)
     return bala
 
+def CreateEnemy1(X,Y, sp, tiempo):
+
+    en = Enemigo1(tiempo, sp, SelectSprite(sp), 75,0)
+    en.setPos( X , Y)
+
+    return en
+
+
+
 def CreateEnemigos1(general):
     Enemigos1 = pygame.sprite.Group()
     Y = -330
@@ -127,7 +136,7 @@ def CreateEnemigos1(general):
 
         for i in range(0,10):
 
-            en = Enemigo1(10 + j * 10, i, SelectSprite(j), SelectPuntos(j))
+            en = Enemigo1(10 + j * 10, i, SelectSprite(j), SelectPuntos(j),50)
             #en = Enemigo1(35, i, SelectSprite(i))
             en.setPos( X + i * 60, Y + j * 55)
             general.add(en)
