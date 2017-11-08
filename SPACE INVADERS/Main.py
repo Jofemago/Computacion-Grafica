@@ -75,7 +75,7 @@ if __name__ =='__main__':
     limitesEnemy.add(izquierda)
     general1.add(izquierda)
 
-
+    tiros = False
     #imagenes de inicio
     Inicio1 = True
     inicio2 = False #cuando se active da inicio al nivel 2
@@ -135,6 +135,11 @@ if __name__ =='__main__':
                 fin=True
 
             if event.type == pygame.KEYDOWN and (nivel1 or nivel2):
+                if event.key == pygame.K_a:
+                    if not tiros:
+                        tiros = not tiros
+                        jg.vidas -= 1
+                        print tiros
                 if event.key == pygame.K_p:
                     #print "pausa"
                     pausa = not pausa
@@ -148,8 +153,17 @@ if __name__ =='__main__':
 
                 if event.key == pygame.K_SPACE:
 
-                    if len(disparosJugador) == 0:
-                        #jg.disparar()
+                    if not tiros:
+                        if len(disparosJugador) == 0:
+                            #jg.disparar()
+                            bala = ProyectilJugador(2)
+                            bala.rect.x = jg.rect.x + 22
+                            bala.rect.y = jg.rect.y +5
+                            disparosJugador.add(bala)
+                            disparos.add(bala)
+                            general1.add(bala)
+                            jg.disparar()
+                    else:
                         bala = ProyectilJugador(2)
                         bala.rect.x = jg.rect.x + 22
                         bala.rect.y = jg.rect.y +5
